@@ -86,7 +86,6 @@ def printTimeRange(n):
  	runTweet  =  tweepy.Cursor(api.search,q="the",since="2015-02-17",until="2015-02-21",lang="en",geocode="40.78,-73.8,30mi").items()
  	tweetCount = -1
  	while True:
- 	 	tweetCount += 1
 		try:
 			c = runTweet.next()
 			if c.coordinates:
@@ -96,12 +95,10 @@ def printTimeRange(n):
 	 			latitude = float(c.coordinates['coordinates'][1])
 	 			#check if within new york area
 	 			if longitude < xmax and longitude > xmin and latitude < ymax and latitude > ymin:
+			 	 	tweetCount += 1
 	 				points = (longitude,latitude)
 					mapTwoDim(points,n)
-					print '1'
-				else:
-					print '2' 
-	 		if tweetCount == 1000: break
+					if tweetCount == 5000: break
 
 		except tweepy.TweepError:
 			time.sleep(60 * 15)
@@ -129,18 +126,26 @@ def setMarkerSize(complaints):
 	maxSize = 12
 	minComp= min(complaints) 
 	maxComp= max(complaints) 
+	print minComp, maxComp
 
-	for item in complaints:
-		normSize = int((float(item-minComp)/(maxComp-minComp))*(maxSize-minSize))+minSize
-		outputSize.append(normSize)
-
-	#set opacity
-	if normSize >=3 and normSize<6:
-		outputOpac.append(0.1)
-	elif normSize >=6 and normSize<9:
-		outputOpac.append(0.3)
-	elif normSize >=9:
-		outputOpac.append(0.6)
+	if minComp != maxComp:
+		for item in complaints:
+			normSize = int((float(item-minComp)/(maxComp-minComp))*(maxSize-minSize))+minSize
+			outputSize.append(normSize)
+			#set opacity
+			"""
+			if normSize >=3 and normSize<6:
+				outputOpac.append(0.1)
+			elif normSize >=6 and normSize<9:
+				outputOpac.append(0.3)
+			elif normSize >=9:
+				outputOpac.append(0.6)
+			"""
+			outputOpac.append(0.7)
+	else:
+		for item in complaints:
+			outputSize.append(3)
+			outputOpac.append(0.7)
 
 	return outputSize,outputOpac
 
@@ -149,8 +154,7 @@ def getZipBorough(zipBoroughFilename):
 	with open(zipBoroughFilename) as f:
 		csvReader = csv.reader(f)
 		csvReader.next()
-
-	return {row[0]: row[1] for row in csvReader}
+		return {row[0]: row[1] for row in csvReader}
 
 def drawPlot(shapeFilename, mapPoints, zipBorough):
 	# Read the ShapeFile
@@ -179,7 +183,7 @@ def drawPlot(shapeFilename, mapPoints, zipBorough):
 			polygons['lng_list'].append(lngs)
 			polygons['lat_list'].append(lats)
 
-			record_index += 1
+		record_index += 1
 
 	#process the size
 	sizes, alp = setMarkerSize(mapPoints['num_dots']) 
@@ -194,7 +198,7 @@ def drawPlot(shapeFilename, mapPoints, zipBorough):
 	patches(polygons['lng_list'], polygons['lat_list'], \
 			fill_color='#C8C6C4', line_color="gray", \
 			tools=TOOLS, plot_width=1100, plot_height=700, \
-			title="311 complaints mapping in NY")
+			title="Twitter posts during Sandy")
 
 	# Draws mapPoints on top of map.
 	hold()
@@ -209,13 +213,13 @@ def drawPlot(shapeFilename, mapPoints, zipBorough):
 
 # Getting argument from user's command line input
 if __name__ == '__main__':
-  if len(sys.argv) != 4:
-    print 'Usage:'
-    print sys.argv[0] \
-    + ' <numberofwindow> <zipboroughfilename> <shapefilename>'
-    print '\ne.g.: ' + sys.argv[0] \
-    + ' 100 zip_borough.csv data/nyshape.shp'
-  else:
-    mapPoints = printTimeRange(int(sys.argv[1]))
-    zipBorough = getZipBorough(sys.argv[2])
-    drawPlot(sys.argv[3], mapPoints, zipBorough)
+	if len(sys.argv) != 4:
+		print 'Usage:'
+		print sys.argv[0] \
+		+ ' <numberofwindow> <zipboroughfilename> <shapefilename>'
+		print '\ne.g.: ' + sys.argv[0] \
+		+ ' 100 zip_borough.csv data/nyshape.shp'
+	else:
+		mapPoints = printTimeRange(int(sys.argv[1]))
+		zipBorough = getZipBorough(sys.argv[2])
+		drawPlot(sys.argv[3], mapPoints, zipBorough)
