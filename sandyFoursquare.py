@@ -1,11 +1,12 @@
 ##############################################
 ##############################################
-#      Sandy School Tweets Monitor           # 
+#      Sandy Foursquare checkin Monitor      # 
 #      Dimas Rinarso Putro | drp354@nyu.edu  #
 #      Urban Science Intensive               #
 ##############################################
-#Consumer Key (API Key)	11jjIaDtu65d7i0Otw6Xk6SGl
-#Consumer Secret (API Secret) u8ejLMzmHAJgS34eXDf4UGGwuul2QianbIeTqfqCFPi8RJSXmI
+#Client id 1UNJUNJDCZGZADG21RTMO12CTWBKCMXGQHIJCFUCVWYGNJJ1
+#Client secret PV1RRZAAOARKXRBUPE1QVXYX5VULXRQESRJ34V301AINVOY3
+
 
 import tweepy
 import matplotlib.pyplot as plt
@@ -17,11 +18,10 @@ from bokeh.sampledata.iris import flowers
 
 
 #tweepy and twitter API
-CONSUMER_KEY = '11jjIaDtu65d7i0Otw6Xk6SGl'
-CONSUMER_SECRET = 'u8ejLMzmHAJgS34eXDf4UGGwuul2QianbIeTqfqCFPi8RJSXmI'
-ACCESS_KEY = '3051641614-P5iZKOwJISpMS6SA5W4t4un63piXofipftevtL7'
-ACCESS_SECRET = 'yx2FLAdH4dXVLvmaMtCog5hF2xthFUjemQdGUSYLhxayM'
+CONSUMER_KEY = '1UNJUNJDCZGZADG21RTMO12CTWBKCMXGQHIJCFUCVWYGNJJ1'
+CONSUMER_SECRET = 'PV1RRZAAOARKXRBUPE1QVXYX5VULXRQESRJ34V301AINVOY3'
 # setup authorization
+client = foursquare.Foursquare(client_id='CONSUMER_KEY', client_secret='CONSUMER_SECRET')
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
