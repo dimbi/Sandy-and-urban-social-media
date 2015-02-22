@@ -2,7 +2,7 @@
 ##############################################
 #      Sandy School Tweets Monitor           # 
 #      Dimas Rinarso Putro | drp354@nyu.edu  #
-#      No.3                                  #
+#      Urban Science Intensive               #
 ##############################################
 #Consumer Key (API Key)	11jjIaDtu65d7i0Otw6Xk6SGl
 #Consumer Secret (API Secret) u8ejLMzmHAJgS34eXDf4UGGwuul2QianbIeTqfqCFPi8RJSXmI
@@ -11,7 +11,7 @@ import tweepy
 import nltk
 import matplotlib.pyplot as plt
 import numpy as np
-
+import csv
 
 # Global Parameter
 CONSUMER_KEY = '11jjIaDtu65d7i0Otw6Xk6SGl'
@@ -37,30 +37,23 @@ class CustomStreamListener(tweepy.StreamListener):
         print >> sys.stderr, 'Timeout...'
         return True 
 
-
 # Function to fetch user's timeline data
-def printTweet():
+def printTweetStream():
 	sandyStream = tweepy.streaming.Stream(auth, CustomStreamListener())    
 	sandyStream.filter(locations=[-74,40,-73,41])
 
+def printTimeRange():	
+	csvFile = open('output.csv', 'a')
+	csvWriter = csv.writer(csvFile)
+	for tweet in tweepy.Cursor(api.search,q="sandy",since="2015-02-17",until="2015-02-21",lang="en").items(100):
+		print tweet.created_at, tweet.text
+		csvWriter.writerow([tweet.created_at, tweet.text.encode('utf-8')])
+
 def main():
-	printTweet()
+	#printTweetStream()
+	printTimeRange()
 
 
 # Getting argument from user's command line input
 if __name__ == '__main__':
 	main()
-
-	"""
-  if len(sys.argv) != 6:
-    print 'Usage:'
-    print sys.argv[0] \
-    + ' <numberofwindow> <complaintsfilename> <zipboroughfilename> <shapefilename> <username>'
-    print '\ne.g.: ' + sys.argv[0] \
-    + ' data/nyshape.shp 100 data/complaints.csv zip_borough.csv username'
-  else:
-  	username = sys.argv[5]
-    mapPoints = loadComplaintsPoints(sys.argv[2],int(sys.argv[1]))
-    zipBorough = getZipBorough(sys.argv[3])
-    drawPlot(sys.argv[4], mapPoints, zipBorough)
-    """
