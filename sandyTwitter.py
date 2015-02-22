@@ -45,7 +45,8 @@ def printTweetStream():
 def printTimeRange():	
 	csvFile = open('output.csv', 'a')
 	csvWriter = csv.writer(csvFile)
-	for tweet in tweepy.Cursor(api.search,q="sandy",since="2015-02-17",until="2015-02-21",lang="en").items(100):
+#	for tweet in tweepy.Cursor(api.search,q="the",since="2015-02-17",until="2015-02-21",lang="en",geocode="40.5,-72,30km").items(1000):
+	for tweet in tweepy.Cursor(api.search,q="the", lang="en",geocode="40.78,-73.8,30mi").items():
 		print tweet.created_at, tweet.text
 		csvWriter.writerow([tweet.created_at, tweet.text.encode('utf-8')])
 
