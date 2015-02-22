@@ -74,7 +74,7 @@ def printTweetStream():
 	sandyStream = tweepy.streaming.Stream(auth, CustomStreamListener())    
 	sandyStream.filter(locations=[-74,40,-73,41])
 
-def printTimeRange(n): 
+def printTweetTimeRange(n): 
 
 	lat = []
 	lng = [] 
@@ -132,7 +132,8 @@ def setMarkerSize(complaints):
 		for item in complaints:
 			normSize = int((float(item-minComp)/(maxComp-minComp))*(maxSize-minSize))+minSize
 			outputSize.append(normSize)
-			#set opacity
+			#set opacity 
+			#set to off to simplify matters
 			"""
 			if normSize >=3 and normSize<6:
 				outputOpac.append(0.1)
@@ -220,6 +221,6 @@ if __name__ == '__main__':
 		print '\ne.g.: ' + sys.argv[0] \
 		+ ' 100 zip_borough.csv data/nyshape.shp'
 	else:
-		mapPoints = printTimeRange(int(sys.argv[1]))
+		mapPoints = printTweetTimeRange(int(sys.argv[1]))
 		zipBorough = getZipBorough(sys.argv[2])
 		drawPlot(sys.argv[3], mapPoints, zipBorough)
