@@ -46,17 +46,17 @@ def printTimeRange():
 	csvFile = open('output.csv', 'a')
 	csvWriter = csv.writer(csvFile)
  	runTweet  =  tweepy.Cursor(api.search,q="the",since="2015-02-17",until="2015-02-21",lang="en",geocode="40.78,-73.8,30mi").items()
-	while True:
+ 	while True:
 		try:
 			c = runTweet.next()
 			if c.coordinates:
-	 			print 'coords:', c.coordinates
-				csvWriter.writerow([c.created_at, c.coordinates,c.text.encode('utf-8')])
-	    except tweepy.TweepError:
-	        time.sleep(60 * 15)
-	        continue
-	    except StopIteration:
-	        break
+				print 'coords:', c.coordinates
+	 			csvWriter.writerow([c.created_at, c.coordinates,c.text.encode('utf-8')])
+		except tweepy.TweepError:
+			time.sleep(60 * 15)
+			continue
+		except StopIteration:
+			break
 
 def main():
 	#printTweetStream()
