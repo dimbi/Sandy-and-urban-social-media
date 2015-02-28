@@ -75,7 +75,6 @@ def printTweetStream():
 	sandyStream.filter(locations=[-74,40,-73,41])
 
 def printTweetTimeRange(n): 
-
 	lat = []
 	lng = [] 
 	num = []
