@@ -1,3 +1,11 @@
+-##############################################
+-##############################################
+-#      Urban Science Intensive               # 
+-#      NYU CUSP                              #
+-#      Dimas Rinarso Putro | drp354@nyu.edu  #
+-#      Sandy Time Series plot                #
+-##############################################
+
 import argparse,csv, sys, os
 from datetime import date,datetime,timedelta
 import matplotlib.pyplot as plt
